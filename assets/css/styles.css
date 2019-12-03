@@ -1,0 +1,275 @@
+.header {
+	background-image: url('../img/ui/index/banner.jpg');
+	padding: 49;
+	width: 100%;
+	max-width: 100%;
+	padding-top: 400px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	font-family: Bitter, serif;
+	background-color: black;
+}
+
+.subtitle_header {
+	margin-top: -200px;
+	margin-right: 0px;
+	margin-left: 1397px;
+	color: rgb(248,248,248);
+	opacity: 0.5;
+	background-color: black;
+	height: 19px;
+}
+
+.title_header {
+	margin-bottom: 0px;
+	margin-right: 0px;
+	margin-left: 1295px;
+	color: rgb(255,255,255);
+	background-color: rgba(0,0,0,0.35);
+	margin-top: -121px;
+}
+
+.body_index {
+	background-color: rgb(48,48,48);
+}
+
+.navbar {
+	text-transform: uppercase;
+	width: 100%;
+	background-color: rgb(243,24,37);
+}
+
+.logo_navbar {
+	width: 27px;
+	margin-right: 10px;
+}
+
+.background_index_1 {
+	background-image: url('../img/ui/index/bg01.jpg');
+	background-size: cover;
+	background-repeat: repeat-x;
+	background-position: bottom;
+}
+
+.first_part_index {
+	background-color: #282828;
+	background-position: center;
+}
+
+.mascot_1 {
+	width: 99px;
+	font-size: 36px;
+	margin-left: 17px;
+}
+
+.mascot_2 {
+	width: 99px;
+	margin-right: 26px;
+}
+
+.photos_index {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.top_post_index {
+	background-color: rgba(153,153,153,0);
+	max-width: 93.33%;
+	width: 445px;
+	min-width: 88px;
+	margin-right: 27px;
+}
+
+.title_post_index {
+	font-size: 23px;
+	color: rgb(112,34,34);
+	font-weight: bold;
+	margin-bottom: -6px;
+}
+
+.username_top_post_index {
+	margin-bottom: 40px;
+	text-decoration: none;
+	text-transform: none;
+}
+
+.username_top_post_index:hover {
+	text-decoration: none;
+}
+
+.figure_top_post {
+	margin-bottom: 11px;
+	margin-top: 9px;
+}
+
+.top_post_index {
+	max-width: 240px;
+}
+
+.top_post_index_base {
+	background-color: rgba(153,153,153,0);
+	max-width: 93.33%;
+	width: 445px;
+	min-width: 88px;
+	padding-right: 0px;
+	margin-right: 27px;
+}
+
+.icon_top_index {
+	width: 90px;
+}
+
+.description_top_index {
+	height: 64px;
+	max-height: 44px;
+}
+
+.profil_picture_top_index {
+	max-width: 240px;
+}
+
+.features_index {
+	background-image: url('../img/ui/index/bg02.jpg');
+	background-size: contain;
+	background-repeat: repeat;
+}
+
+.features_container {
+	background-color: #121212;
+}
+
+
+.background_brand {
+	background-color: #222222;
+	margin-top: -30px;
+}
+
+.title_brands {
+	margin-top: -13px;
+	font-size: 35px;
+}
+
+.brand {
+	width: 50px;
+	max-width: 90px;
+	filter: brightness(200%) contrast(0%);
+	margin-right: 24px;
+}
+
+.brand_bloc {
+	margin-top: -30px;
+	height: 199px;
+	background-color: #222222;
+	padding: 40px;
+	padding-left: 0px;
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+
+.footer_wibuu {
+	background-color: rgb(14,16,18);
+	padding: auto;
+	padding-top: 69px;
+}
+
+.footer_container {
+	height: 100%;
+	max-height: none;
+}
+
+.red_title {
+	color: rgb(243,24,37);
+}
+
+.icon_navbar {
+	margin-left: 4px;
+}
+
+.avatar_profilepage_bloc {
+	padding-right: 0px;
+	padding-left: 0px;
+	margin-top: 30px;
+	margin-bottom: 61px;
+}
+
+.avatar_profilepage {
+	width: 20%;
+	margin-right: 42px;
+}
+
+.info_profile_page {
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+.profilpage_username {
+	font-weight: normal;
+	font-size: 30px;
+}
+
+.bloc_profile_posts {
+	background-color: #e0e0e0;
+	width: 70%;
+	margin-bottom: 44px;
+	margin-left: 15%;
+}
+
+.img_postprofile {
+	max-width: 227px;
+	max-height: 211px;
+}
+
+.infos_post_profile {
+	font-size: 12px;
+}
+
+.bg_edit_profile {
+	background-color: #e0e0e0;
+}
+
+.edit_profile_avatarbloc {
+	margin-right: 63px;
+	margin-bottom: 22px;
+}
+
+.avatar_edit {
+	height:175px;
+	width:175px;
+}
+
+.edit_profile_avatar {
+	margin-top: 30px;
+	margin-bottom: 61px;
+}
+
+.title_editprofile {
+	font-size: 42px;
+}
+
+.edit_bloc {
+	margin-bottom: 306px;
+	margin-top: 12px;
+}
+
+.fieldedit {
+	margin-top: 28px;
+	margin-bottom: 28px;
+}
+
+.bg_gallery {
+	background-image: url('../img/ui/seamless_pattern.jpg');
+}
+
+.bg_bloc_gallery {
+	background-color: #f2f2f2;
+}
+
+.keep_proper_link {
+	text-decoration: none;
+	color: inherit;
+}
+
+.keep_proper_link:hover {
+	text-decoration: none;
+	color: inherit;
+}
