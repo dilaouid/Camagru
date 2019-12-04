@@ -69,7 +69,7 @@ class AdminManagment extends Users {
     public function globalParam() {
         $Content = '<form action="" method="post" enctype="multipart/form-data">';
         $Content .= $this->formGroup('Nom du site', 'sitename', $this->global['sitename']);
-        $Content .= $this->formGroup('Sous-titre (dans le header de la page d\'accueil)', 'subtitle', $this->global['subtitle_index']);
+        $Content .= $this->formGroup('Sous-titre (dans le header de la page d\'accueil)', 'subtitle_index', $this->global['subtitle_index']);
         $Content .= $this->formGroup('Court résumé (footer, en bas à droite)', 'short_about_us', $this->global['short_about_us'], null, 1);
         $Content .= '<label>Logo</label><div class="form-row"><div class="col" style="margin-bottom: 17px;"><input type="file" name="logo"></div></div>';
         $Content .= '<div class="form-row" style="margin-bottom: 20px;">';
