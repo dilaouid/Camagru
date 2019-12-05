@@ -38,7 +38,6 @@ class AdminManagment extends Users {
         $Content = '<nav class="navbar navbar-dark navbar-expand-md fixed-bottom border-dark text-uppercase shadow navigation-clean-search" style="width: 100%;background-color: rgb(145,15,23);height: 47px;"><div class="container-fluid"><div class="navbar-collapse text-white" id="navcol-1"><ul class="nav navbar-nav">';
 
         $Content .= $this->navElem('.', 'Panneau de contrôle', 'gears');
-        $Content .= $this->navElem('users.php', 'Utilisateurs', 'user');
         $Content .= $this->navElem('features.php?option=create', 'Features', 'trophy');
         $Content .= $this->navElem('filter.php', 'Nouveau filtre', 'camera');
 

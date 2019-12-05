@@ -1,6 +1,6 @@
 <?php
 
-$config_file = file("config.php");
+$config_file = file("database.php");
 if (count($config_file) === 5)
     header('Location: create_admin.php');
 
@@ -33,7 +33,7 @@ if (isset($_POST['submit'])){
     $createTable = $database::createTables($database);
 
     if (isset($count)) {
-        $file_config = fopen('config.php', 'r+');
+        $file_config = fopen('database.php', 'r+');
 
         fputs($file_config, "<?php
         \$DB_DSN = \"mysql:dbname=" . $db . ";host=" . $host . "\";

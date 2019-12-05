@@ -821,10 +821,7 @@ class Gallery {
         $file = $folderPath . $fileName;
         file_put_contents($file, $image_base64);
 
-        if ($image_parts[0] == "data:image/webp")
-            $webcamPhotoWebP = imagecreatefromwebp($file);
-        else
-            $webcamPhotoWebP = imagecreatefrompng($file);
+        $webcamPhotoWebP = imagecreatefrompng($file);
 
         imagejpeg($webcamPhotoWebP, $folderPath . $uniqid .'.jpeg', 100);
         $destroy = imagedestroy($webcamPhotoWebP);

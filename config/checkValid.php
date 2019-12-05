@@ -27,6 +27,11 @@ $FrontManagment = new App\FrontManagment($db, $global);
 if (!isset($loginpage) && $global['maintenance'] == 1)
 	$forbiddenpage = true;
 
+if ($data[0] == 1 AND file_exists('config/create_admin.php'))
+    unlink('config/create_admin.php');
+
+if (file_exists('config/setup.php'))
+    unlink('config/setup.php');
 
 if (isset($forbiddenpage) AND (!$FrontManagment->isAdmin($userid))) {
 	header('Location: maintenance.php');

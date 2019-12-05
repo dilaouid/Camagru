@@ -6,13 +6,14 @@ require_once('Class/Database.php');
 require_once('Class/IndexManagment.php');
 require_once('Class/FrontManagment.php');
 require_once('Class/Users.php');
-require_once('config/config.php');
+require_once('config/database.php');
 require_once('config/checkValid.php');
 
 if (isset($_GET['logout']) AND isset($_SESSION['id'])) {
     session_destroy();
     header('Location: index.php');
 }
+
 
 $section = 'index';
 

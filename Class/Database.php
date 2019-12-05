@@ -80,7 +80,7 @@ class Database {
           UNIQUE KEY `sitename` (`sitename`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8;", 'App\Database', true);
 
-        $database->query('INSERT INTO wibuu_global (short_about_us) VALUES ("Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac sem lacus. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo.")', 'App\Database', true);
+        $database->query('INSERT INTO wibuu_global (short_about_us, subtitle_index) VALUES ("Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac sem lacus. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo.", "Weeb comme tu es !")', 'App\Database', true);
 
         $database->query("DROP TABLE IF EXISTS `wibuu_users`;
         CREATE TABLE IF NOT EXISTS `wibuu_users` (
@@ -97,7 +97,7 @@ class Database {
           `logged` int(1) DEFAULT '0',
           `banned` int(1) DEFAULT '0',
           `private` int(1) DEFAULT '0',
-          `notifications` tinyint(1) NOT NULL DEFAULT '0',
+          `notifications` tinyint(1) NOT NULL DEFAULT '1',
           `registration_key` varchar(255) DEFAULT '',
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

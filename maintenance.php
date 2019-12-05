@@ -5,7 +5,7 @@ session_start();
 require_once('Class/Database.php');
 require_once('Class/FrontManagment.php');
 require_once('Class/Gallery.php');
-require_once('config/config.php');
+require_once('config/database.php');
 
 if (!isset($DB_DSN) || !isset($USER_DB) || !isset($PASSWORD_DB))
     header('Location: /config/setup.php');

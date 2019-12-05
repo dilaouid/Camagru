@@ -281,12 +281,13 @@ class Users {
                             $number    = preg_match('@[0-9]@', $post['password']);
                             $specialChars = preg_match('@[^\w]@', $post['password']);
 
-                            if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($this->password) < 8) {
+                            if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($post['password']) < 8) {
                                 $this->alert = '<div class="col"><div class="alert alert-danger"  role="alert" style="width: 250px;margin-top: 16px;">
                                         <span>Votre mot de passe n\'est pas assez sécurisé.</span>
                                         </div></div>';
                                 return ;
                             }
+                            
                             $entry = password_hash($entry, PASSWORD_DEFAULT);
                         }
                         else {

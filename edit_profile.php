@@ -7,7 +7,7 @@ require_once('Class/Checkdatas.php');
 require_once('Class/IndexManagment.php');
 require_once('Class/FrontManagment.php');
 require_once('Class/Users.php');
-require_once('config/config.php');
+require_once('config/database.php');
 require_once('config/checkValid.php');
 require_once('config/func.php');
 

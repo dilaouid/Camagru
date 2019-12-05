@@ -6,7 +6,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Class/Database.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Class/AdminManagment.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Class/FrontManagment.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Class/Users.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/config/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/config/database.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/checkValid.php');
 
 if (!isset($userid))

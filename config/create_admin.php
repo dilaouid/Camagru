@@ -3,7 +3,7 @@
 require_once('../Class/Config/Form.php');
 require_once('../Class/Users.php');
 require_once('../Class/Database.php');
-require_once('config.php');
+require_once('database.php');
 
 $form = new App\Form();
 
