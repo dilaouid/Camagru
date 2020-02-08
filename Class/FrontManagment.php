@@ -29,6 +29,9 @@ class FrontManagment {
     	}
     }
 
+
+    // Affiche la dernière publication visible par l'utilisateur //
+
     private function lastpublication() {
     	$lastpublication = $this->db->query('SELECT id, author FROM wibuu_posts WHERE private = 0 AND active = 1 ORDER BY date DESC LIMIT 1 OFFSET 0');
         $return = $lastpublication->fetch(PDO::FETCH_ASSOC);
@@ -49,6 +52,8 @@ class FrontManagment {
 
     }
 
+    // Vérifie si $user suit $follows //
+
     private function isFollowing($user, $follows) {
         if ($this->userid == $user)
             return 1;
@@ -58,6 +63,8 @@ class FrontManagment {
         return $query->rowCount();
     }
 
+    // Vérifie si un utilisateur est privé ou non //
+
     private function isPrivate($user) {
         if ($this->userid == $user)
             return 0;
@@ -65,10 +72,14 @@ class FrontManagment {
         return $query->rowCount();
     }
 
+    // Vérifie si un utilisateur est administrateur //
+
     public function isAdmin($userid) {
         $query = $this->db->query("SELECT id FROM wibuu_users WHERE id = $userid AND admin = 1");
         return $query->rowCount();
     }
+
+    // Affiche une publication (accessible) aléatoire //
 
     private function rdmpublication() {
     	$rdmpublication = $this->db->query('SELECT id, author FROM wibuu_posts WHERE private = 0 AND active = 1 ORDER BY RAND() LIMIT 1');
@@ -89,6 +100,8 @@ class FrontManagment {
     	return '<li><a href="/post.php?id='. $id .'">publication aléatoire</a></li>';
     }
 
+    // Affiche la publication la plus populaire (somme de likes et de commentaires) //
+
     private function bestpublication() {
     	$bestpublication = $this->db->query('SELECT id, author FROM wibuu_posts WHERE private = 0 AND active = 1 ORDER BY (nb_likes + nb_comments) DESC LIMIT 1 OFFSET 0');
     	$return = $bestpublication->fetch(PDO::FETCH_ASSOC);
@@ -108,6 +121,8 @@ class FrontManagment {
     	return '<li><a href="/post.php?id='. $id .'">publication la plus populaire</a></li>';
     }
 
+    // Affiche les réseaux sociaux en footer //
+
     private static function socialnetwork_footer($global) {
     	if (is_null($global['facebook']) AND is_null($global['twitter']) AND is_null($global['instagram']))
     		return ;
@@ -121,6 +136,8 @@ class FrontManagment {
     	$Content .= '</div>';
     	return $Content;
     }
+
+    // Affiche le footer //
 
     public function footer() {
     	$Content = '<div class="text-uppercase footer-dark footer_wibuu"><footer><div class="container footer_container"><div class="row">';
@@ -155,11 +172,22 @@ class FrontManagment {
     	return $Content;
     }
 
+
+
+/////////////////////////////////////////////////
+///////////// NAVBAR ////////////////////////////
+/////////////////////////////////////////////////
+
+
+    // Retourne un élement actif de la navbar //
+
     private static function getactive($section, $page) {
     	if ($section == $page)
     		return 'active';
     	return null;
     }
+
+    // Retourne le nombre de notifications dans la navbar s'il y en a //
 
     private static function getnotifications($userid) {
     	$nbNotifications = self::$dbs->query('SELECT id AS nb FROM wibuu_notifications WHERE active = 1 AND dest = '.$userid);
@@ -167,6 +195,8 @@ class FrontManagment {
 	    	return '<strong>('.$nbNotifications->rowCount().')</strong>';
     	}
     }
+
+    // Affiche la navbar //
 
     public function navbar($userid, $section) {
     	$Content = '

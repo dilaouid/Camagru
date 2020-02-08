@@ -4,7 +4,6 @@
 namespace App;
 use \PDO;
 
-
 require_once($_SERVER['DOCUMENT_ROOT'].'/Class/Users.php');
 
 class AdminManagment extends Users {
@@ -151,7 +150,6 @@ class AdminManagment extends Users {
             $title = $data['title'];
             $btn = 'Je change d\'avis comme de Pipimi';
         }
-
 
         $Content = '<h4 class="card-title">'.$option.'</h4><form method="post" action=""><div class="form-row justify-content-center"><div class="col-5"><div class="form-group"><label>Icone font awesome</label><input class="form-control" type="text" placeholder="Exemple : fa-video-camera" name="icon" required value="'.$icon.'"></div></div><div class="col-5"><div class="form-group"><label>Titre de votre feature</label><input class="form-control" type="text" name="title" required value="'.$title.'"></div></div></div><div class="form-row justify-content-center"><div class="col-10"><div class="form-group"><label>Description de la feature</label><textarea class="form-control form-control-lg" name="description" required="">'.$description.'</textarea></div></div><div class="row">';
 

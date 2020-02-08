@@ -25,10 +25,23 @@ class Gallery {
             $this->userid = -1;
     }
 
+    public function checkPostExists($id) {
+        $query = $this->db->query("SELECT id FROM wibuu_posts WHERE id = $id AND active = 1");
+        if ($query->rowCount() == 0)
+            header('Location: gallery.php');
+            // On redirige si aucun id n'a été trouvé pour l'id entré en paramètre
+    }
+
+    // Vérifie si un utilisateur est administrateur
+
     private function isAdmin($id) {
         $query = $this->db->query("SELECT id FROM wibuu_users WHERE admin = 1 AND id = $id");
         return ($query->rowCount());
     }
+
+KJUGASCGAMBERS
+
+    // Retourne le temps lisible par un human à partir d'une timestamp
 
     private function humanTiming($time) {
         $time = strtotime($time);
@@ -52,16 +65,22 @@ class Gallery {
 
     }
 
+    // Retourne le nom du filtre utilisé dans un post
+
     private function getFilter($idFilter) {
         $query = $this->db->query("SELECT name FROM wibuu_filters WHERE id = $idFilter");
         $filter = $query->fetch()[0];
         return $filter;
     }
 
+    // Vérifie si $user suit $follows
+
     private function isFollowing($user, $follows) {
         $query = $this->db->query("SELECT id FROM wibuu_follows WHERE user = $user AND follows = $follows AND accepted = 1");
         return ($query->rowCount());
     }
+
+    // Vérifie si une publication est visible par l'utilisateur
 
     private function showPost($private, $author) {
         if ($private == 1 AND $this->userid != $author AND $this->admin != 1) {
@@ -72,12 +91,16 @@ class Gallery {
         return 1;
     }
 
+    // Vérifie si l'utilisateur like un post, pour afficher l'icone correctement
+
     private function userLikes($postid) {
         $query = $this->db->query("SELECT id FROM wibuu_likes WHERE user = $this->userid AND likes = $postid");
         if ($query->rowCount() > 0)
             return ;
         return '-o';
     }
+
+    // Vérifie si l'utilisateur a commencé un post, pour afficher l'icone correctement
 
     private function userCommented($postid) {
         $query = $this->db->query("SELECT id FROM wibuu_comments WHERE author = $this->userid AND post = $postid AND active = 1");
@@ -86,11 +109,15 @@ class Gallery {
         return '-o';
     }
 
+    // Récupère les infos d'un utilisateur
+
     private function getAuthorInfo($id) {
         $query = $this->db->query("SELECT id, avatar, username, private, admin FROM wibuu_users WHERE id = $id");
         $data = $query->fetch();
         return $data;
     }
+
+    // Fonction globale pour uploader un fichier
 
     public function uploadFile($file, $newName, $path, $legalExtensions, $legalSize, $outputExt) {
 
@@ -99,27 +126,35 @@ class Gallery {
         $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
 
         if ($file['tmp_name'] === 0 OR $actualSize == 0) {
-            $this->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>L\'avatar est invalide ! Taille max: '.($legalSize / 1000).' ko / Formats : '.implode(' ', $legalExtensions).'</span></div></div>';
+            $this->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>Le fichier importé est invalide ! Taille max: '.($legalSize / 1000).' ko / Formats : '.implode(' ', $legalExtensions).'</span></div></div>';
             return 0;
         }
+        // Si le fichier n'a pas de tmpname, ou qu'il est vide, c'est qu'il y a une erreur :)
 
         if (file_exists($path.'/'.$newName.'.'.$extension))
             unlink($path.'/'.$newName.'.'.$extension);
+        // Si un fichier porte déjà ce nom, on le remplace
 
+
+        // On vérifie que la taille est OK
         if ($actualSize < $legalSize) {
             if (in_array($extension, $legalExtensions))
                 move_uploaded_file($actualName, $path.'/'.$newName.'.'.$outputExt);
+                // Si le fichier a une extension correcte, on l'importe
             else {
                 $this->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>Le fichier est invalide ! Formats acceptés : '.implode(' ', $legalExtensions).'</span></div></div>';
                 return 0;
             }
+            // Sinon, on affiche une erreur
         }
         else {
-            $this->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>L\'avatar est trop lourd ! Taille max: '.($legalSize / 1000).' ko</span></div></div>';
+            $this->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>Le fichier importé est trop lourd ! Taille max: '.($legalSize / 1000).' ko</span></div></div>';
             return 0;
         }
         return 1;
     }
+
+    // Obtenir les derniers commentaires d'un post
 
     private function getLastComments($nbcomments, $postid) {
         if ($nbcomments == 0)
@@ -137,6 +172,8 @@ class Gallery {
         return '<a href="post.php?id='.$postid.'" class="keep_proper_link"><strong>Afficher les '.$nbcomments.' commentaires</strong></a><br>
         <a href="profile.php?id='.$authorComment['id'].'" class="keep_proper_link"><strong>'.$lastCommenteur.'</a> </strong>'.$dataComment['comment'].'<br></p>'.$momentComment;
     }
+
+    // Affichage du formulaire pour envoyer un commentaire
 
     private function allowComment($postid,$counter) {
         if ($this->userid == -1)
@@ -163,6 +200,7 @@ class Gallery {
     }
 
 
+    // Afficher les publications sur une page (avec la pagination)
 
     public function printPosts($page, $limit) {
 
@@ -270,6 +308,8 @@ class Gallery {
         return $Content.'</div>';
     }
 
+    // Affiche les publications sur la barre de droite
+
     private function fillBlocPanel($authorInfos, $data, $counter) {
         $bg = null;
             if ($counter % 2 == 0)
@@ -291,6 +331,8 @@ class Gallery {
             </div>');
     }
 
+    // Affiche les publications des abonnements
+
     public function printFollowingPanel() {
         $counter = 0;
         $Content = '<div id="following">';
@@ -308,12 +350,15 @@ class Gallery {
         return $Content.'</div>';
     }
 
+    // Affiche les publications les plus populaires
+
     public function printPopularPanel() {
         $counter = 0;
         $Content = '<div id="popular" style="">';
         if ($this->userid != -1)
             $Content = '<div id="popular" style="display: none;">';
         $query = $this->db->query("SELECT id, title, date, author FROM wibuu_posts WHERE active = 1 AND private = 0 ORDER BY (nb_comments + nb_likes) DESC LIMIT 20");
+        // Afficher 20 publications populaires actives
         if ($query->rowCount() == 0)
             $Content .= '<div class="row justify-content-center align-items-center" style="margin-top: 10px;"><p class="text-white-50">Aucune publication.</p></div>';
         while ($data = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -322,16 +367,20 @@ class Gallery {
                 $Content .= $this->fillBlocPanel($authorInfos, $data, $counter);
                 $counter++;
             }
+            // Afficher tout les élements visibles par l'utilisateur
         }
         return $Content.'</div>';
     }
 
+    // Gestion de la pagination
 
     public function pagination($nbPages, $actualPage) {
         
         $page = 1;
         if ($nbPages <= 1)
             return ;
+        // On commence à la page 1, et s'il n'y en a qu'une, on n'affiche pas de paginations
+
 
         $Content = '<div class="row text-center justify-content-center">
                 <div class="col-auto text-center">
@@ -339,7 +388,8 @@ class Gallery {
                         <ul class="pagination pagination-sm">';
 
         if ($actualPage > 1)
-            $Content .= '<li class="page-item"><a class="page-link" href="?page='. ($actualPage - 1) .'" aria-label="Previous"><span aria-hidden="true">«</span></a></li>';
+            $Content .= '<li class="page-item"><a class="page-link" href="?page='. ($actualPage - 1) .'" aria-label="Précédent"><span aria-hidden="true">«</span></a></li>';
+        // Si on n'est pas à la première page, afficher un bouton pour arriver à la première page
 
         while ($page <= $nbPages) {
             $active = null;
@@ -348,15 +398,20 @@ class Gallery {
             $Content .= '<li class="page-item '.$active.'"><a class="page-link" href="?page='. $page .'">'.$page.'</a></li>';
             $page++;
         }
+        // Afficher un bouton pour chaque page
+
 
         if ($nbPages > 1 AND $actualPage != $nbPages)
-            $Content .= '<li class="page-item"><a class="page-link" href="?page='.($actualPage + 1).'" aria-label="Next"><span aria-hidden="true">»</span></a></li>';
+            $Content .= '<li class="page-item"><a class="page-link" href="?page='.($actualPage + 1).'" aria-label="Suivant"><span aria-hidden="true">»</span></a></li>';
+        // Si on n'est pas à la dernière page, afficher un bouton pour arriver à la dernière page
 
         $Content .= '</ul></nav></div></div>';
 
         return $Content;
                         
     }
+
+    // Fonction d'envoi de mail
 
     private function sendMail($to, $type, $id) {
 
@@ -390,6 +445,8 @@ class Gallery {
         mail($dataAuthor['email'], $subject, $message, $headers);
         return ;
     }
+
+    // Envoi d'un commentaire
 
     public function newComment($comment, $postid) {
         $htmlcomment = htmlentities($comment);
@@ -425,6 +482,8 @@ class Gallery {
 
         return 1;
     }
+
+    // Affiche une publication dans la page
 
     public function pagePost($postid, $key) {
 
@@ -554,6 +613,8 @@ class Gallery {
 
     }
 
+    // Suppression d'un commentaire
+
     public function deleteComment($comment, $post) {
 
         if ($this->userid == -1)
@@ -578,6 +639,8 @@ class Gallery {
 
     }
 
+    // Suppression d'une publication
+
     public function deletePost($postid) {
         if ($this->userid == -1)
             return ;
@@ -594,6 +657,8 @@ class Gallery {
             $deleteNotif   = $this->db->query("UPDATE wibuu_notifications SET active = 0 WHERE id_link = $postid");
         }
     }
+
+    // Like d'une publication
 
     public function like($postid) {
 
@@ -623,6 +688,8 @@ class Gallery {
             } 
         }
     }
+
+    // Retrait du like d'une publication
 
     public function unLike($postid) {
 
@@ -654,6 +721,8 @@ class Gallery {
         }
     }
 
+    // Fonction pour gérer le format png d'une image importé
+
     private function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct){
         $cut = imagecreatetruecolor($src_w, $src_h);
 
@@ -665,9 +734,13 @@ class Gallery {
     }
 
 
+    // Une barre pour ajuster une valeur entrée en paramètre
+
     private function rangeChoose($label, $name, $min, $max, $style = null, $value = 0) {
         return '<div class="row justify-content-center" style="'.$style.'"><div class="col-auto"><label class="col-form-label">'.$label.'</label></div><div class="col-auto"><input class="custom-range" type="range" name="'.$name.'" step="5" onclick="moveFilter()" value="'.$value.'" min="'.$min.'" max="'.$max.'"></div></div>';
     }
+
+    // Affichage de tout les filtres disponibles
 
     private function allFilters() {
         $Content = null;
@@ -689,6 +762,8 @@ class Gallery {
         return $Content;
     }
 
+    // Affichage de la denrière publication d'un utilisateur
+
     private function lastPostSubmit() {
         $query = $this->db->query("SELECT img, id, private, keylock FROM wibuu_posts WHERE author = $this->userid AND active = 1 ORDER BY date DESC LIMIT 4 ");
         if ($query->rowCount() == 0)
@@ -703,6 +778,8 @@ class Gallery {
         $Content .= '</div>';
         return $Content;
     }
+
+    // Affichage de la capture photo
 
     public function capturePhoto($type) {
 
@@ -734,6 +811,8 @@ class Gallery {
         return $Content;
 
     }
+
+    // Application du filtre sur l'image importée
 
     private function applyFilter($post, $filename) {
 
@@ -792,6 +871,8 @@ class Gallery {
 
     }
 
+    // Traitement du formulaire d'envoi d'une image importée ou capturée
+
     public function submitPicture($post) {
 
         if (!is_numeric($post['x_pos']) OR !is_numeric($post['y_pos']) OR !is_numeric($post['size']) OR !is_numeric($post['height']) OR !is_numeric($post['filterPost']))
@@ -815,6 +896,7 @@ class Gallery {
 
         $ext = explode('/', $image_parts[0])[1];
 
+            // On donne au fichier un nom unique, pour qu'il ne puisse pas être écrasé, ni facilement récupérable par url si le compte ou la publication est privé
         $uniqid = uniqid();
 
         $fileName = $uniqid . $ext;
@@ -830,6 +912,8 @@ class Gallery {
         $this->applyFilter($post, $uniqid);
 
     }
+
+    // Petite fonction qui se lance pour vérifier si tout se passe bien, avant le traitement de l'image
 
     public function submitFile($post, $file) {
         if ($file['size'] == 0 OR $file['error'] > 0)

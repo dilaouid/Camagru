@@ -4,9 +4,13 @@ namespace App;
 
 class IndexManagment {
 
+    // Fonction qui se lance s'il n'y a encore aucune publication sur le site
+
     public static function noTop() {
         return '<p class="text-center"><em>Aucune publication pour le moment...</em></p>';
     }
+
+    // Fonction qui affiche les features
 
     public function features($db, $global) {
         $features_query = $db->query('SELECT title, description, icon FROM wibuu_features');
@@ -24,6 +28,8 @@ class IndexManagment {
         $Content .= '</div></div></div>';
         return $Content;
     }
+
+    // Fonction qui affiche les dernière publications dans la page d'accueil
 
     public function getTop($db, $query, $userid) {
         while ($getContent = $query->fetch()) {

@@ -9,8 +9,9 @@ require_once('Class/Users.php');
 require_once('config/database.php');
 require_once('config/checkValid.php');
 
+// Si l'utilisateur est connecté, on le redirige
 if ($userid > 0)
-    header('Location: index.php');
+    header('Location: /');
 
 if (isset($_POST['submit'])) {
     $User = new App\Users($db, $_POST, $global);

@@ -23,10 +23,14 @@ class Checkdatas {
 
     }
 
+    // Vérification si le paramètre correspond à un id admin //
+
     private function isAdmin($id) {
         $query = $this->db->query("SELECT id FROM wibuu_users WHERE admin = 1 AND id = $id");
         return ($query->rowCount());
     }
+
+
 
     public function check_qs_exists($id, $table) {
 
@@ -45,6 +49,8 @@ class Checkdatas {
 
     }
 
+    // Vérification si l'utilisateur est privé //
+
     public function privateProfile() {
 
     	$data = $this->db->prepare("SELECT private FROM wibuu_users WHERE id = ?");
@@ -60,6 +66,8 @@ class Checkdatas {
 
     }
 
+    // Vérification si l'utilisateur suit un autre en particulier //
+
     public function isfollow($user, $follows, $await) {
 
         if ($this->userid == -1)
@@ -70,6 +78,8 @@ class Checkdatas {
     	return $data->rowCount();
 
     }
+
+    // Récuperation  des réseaux sociaux de l'utilisateur //
 
     private function getSocialProfile($facebook, $instagram, $twitter) {
     	$this->privateProfile();
@@ -89,15 +99,23 @@ class Checkdatas {
     	return $Content;
     }
 
+
+    // Le nombre d'abonnements //
+
     private function getFollowing($id) {
         $data = $this->db->query("SELECT COUNT(user) FROM wibuu_follows WHERE user = $id AND accepted = 1");
         return ($data->fetch()[0]);
     }
 
+    // Le nombre d'abonnés //
+
     private function getFollowers($id) {
         $data = $this->db->query("SELECT COUNT(follows) FROM wibuu_follows WHERE follows = $id AND accepted = 1");
         return ($data->fetch()[0]);
     }
+
+
+    // Les infos du profil //
 
     public function getInfos() {
 
@@ -123,15 +141,19 @@ class Checkdatas {
 		if ($this->id == $this->userid)
 			$Content .= '<button class="btn btn-primary" type="button" onclick="window.location.href = \'edit_profile.php\';" style="margin-right: 10px;">Modifier le profil</button>';
 
+            // Si l'utilisateur connecté est abonné à l'utilisateur affiché
 		elseif ($this->isfollow($this->userid, $this->id, 1) AND $this->userid != -1)
 			$Content .= '<button class="btn btn-outline-primary" type="button" style="margin-right: 10px;" onclick="unFollow()" id="buttonFollow">Ne plus suivre</button>';
 
+            // Si l'utilisateur connecté veut annuler sa demande d'abonnement à l'utilisateur affiché
         elseif ($this->isfollow($this->userid, $this->id, 0) AND $this->userid != -1)
             $Content .= '<button class="btn btn-outline-primary" type="button" style="margin-right: 10px;" onclick="stopFollow('.$this->admin.')" id="buttonFollow">Annuler la demande</button>';
 
+            // Si l'utilisateur connecté veut suivre l'utilisateur affiché
         elseif (!$this->isfollow($this->userid, $this->id, 1) AND $this->userid != -1)
             $Content .= '<button class="btn btn-primary" type="button" style="margin-right: 10px;" onclick="askFollow('.$this->admin.')" id="buttonFollow">Suivre</button>';
 
+            // Si l'utilisateur affiché à fait une demande d'abonnement à l'utilisateur connecté
         if ($this->isfollow($this->id, $this->userid, 0) AND $this->userid != -1)
             $Content .= '<button class="btn btn-info" type="button" style="margin-right: 10px;" onclick="acceptFollow()" id="acceptFollow">Accepter la demande d\'abonnement</button>';
 
@@ -160,6 +182,8 @@ class Checkdatas {
 
     }
 
+    // Vérification si l'utilisateur a liké ou commenté un post entré en paramètre //
+
     private function interacted($type, $postid) {
 
     	if ($type == 'like') {
@@ -177,8 +201,9 @@ class Checkdatas {
     	}
 
 
-
     }
+
+    // Récupération de toutes les publications d'un utilisateur entré en paramètre //
 
     public function allPosts($userid) {
 
@@ -217,6 +242,8 @@ class Checkdatas {
     	return $Content.'</div></div>';
 
     }
+
+    // Récupération de toutes les notifications de l'utilisateur //
 
     public function getNotifList() {
 

@@ -48,6 +48,12 @@ class Users {
 
     }
 
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+    /// GESTION DES COMPTES ADMINISTRATEUR ///
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+
     public function isAdmin($id) {
         $query = $this->db->query("SELECT id FROM wibuu_users WHERE admin = 1 AND id = $id");
         return ($query->rowCount());
@@ -79,6 +85,17 @@ class Users {
         else
             return -1;
     }
+
+    ///////////////////////////////////////
+    ///////////////////////////////////////
+    ///////////////////////////////////////
+    //////////////////////////////////////////
+
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+    /// Verification de l'utilisateur inscrit
+    //////////////////////////////////////////
+    //////////////////////////////////////////
 
     private function checkEmail_exists() {
         $checkEmail = $this->db->prepare('SELECT email FROM wibuu_users WHERE email = ?');
@@ -118,6 +135,18 @@ class Users {
         $this->verificationMail($key);
         return $key;
     }
+
+
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+    /// Inscription de l'utilisateur       ///
+    //////////////////////////////////////////
+    //////////////////////////////////////////
 
     public function createUser() {
 
@@ -178,6 +207,15 @@ class Users {
         }
     }
 
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+    /// Connexion de l'utilisateur         ///
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+
     public function login() {
         $checklog = $this->db->prepare('SELECT password, id, registration_key, banned, admin FROM wibuu_users WHERE username = ?');
         $checklog->execute(array($this->username));
@@ -202,12 +240,20 @@ class Users {
         $this->alert = '<div class="alert alert-danger alertbloc" role="alert"><span>Identifiants incorrects</span></div>';
     }
 
+    // Recupérer les données de l'utilisateur connecté
     public function infoUsers($id) {
-        $datas = $this->db->prepare('SELECT username, email, avatar, twitter, instagram, facebook, description, logged, private, notifications
+        $datas = $this->db->prepare('SELECT username, email, avatar, twitter, instagram, facebook, description, private, notifications
                                     FROM wibuu_users WHERE id = ?');
         $datas->execute(array($id));
         return $datas->fetch(PDO::FETCH_ASSOC);
     }
+
+
+    //////////////////////////////////////////  
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+
+    // Fonction globale pour uploader un fichier
 
     public function uploadFile($file, $newName, $path, $legalExtensions, $legalSize, $outputExt) {
 

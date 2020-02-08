@@ -11,8 +11,10 @@ require_once('config/database.php');
 require_once('config/checkValid.php');
 require_once('config/func.php');
 
+
+// La page est restreinte aux utilisateur connectés
 if ($userid == -1)
-    header('Location: login.php');
+    header('Location: /');
 
 $FrontManagment = new App\FrontManagment($db, $global);
 $section = 'profile';

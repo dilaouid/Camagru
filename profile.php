@@ -10,15 +10,17 @@ require_once('Class/Users.php');
 require_once('config/database.php');
 require_once('config/checkValid.php');
 
+// Si on a pas spécifié l'id dans les query string, on redirige vers l'index
 if (!isset($_GET['id']))
-    header('Location: index.php');
+    header('Location: /');
 
 $profilePage = new App\Checkdatas($db);
 
 $id = htmlentities($_GET['id']);
 
+// On vérifie si l'utilisateur existe
 if ($profilePage->check_qs_exists($id, 'wibuu_users') == 0)
-    header('Location: index.php');
+    header('Location: /');
 
 $section = 'profile';
 

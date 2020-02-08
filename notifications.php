@@ -8,6 +8,7 @@ require_once('Class/Checkdatas.php');
 require_once('config/database.php');
 require_once('config/checkValid.php');
 
+// La page est restreinte aux utilisateur connectés
 if ($userid == -1)
     header('Location: /');
 

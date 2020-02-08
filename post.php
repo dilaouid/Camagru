@@ -14,6 +14,7 @@ $profilePage = new App\Checkdatas($db);
 
 $section = 'gallery';
 
+// On vérifie si l'id de la publication est valide
 if (isset($_GET['id']) AND is_numeric($_GET['id']))
     $postid = $_GET['id'];
 else
@@ -26,6 +27,9 @@ if (isset($_GET['key']))
 $Gallery = new App\Gallery($db, $global);
 $User = new App\Users($db, null, $global);
 
+// On vérifie si l'id en query string correspond bien à l'id d'une publication valide
+$Gallery->checkPostExists($postid);
+
 if (isset($_GET['like']) AND is_numeric($_GET['like']))
     $Gallery->like($_GET['like']);
 
@@ -35,6 +39,7 @@ if (isset($_GET['unLike']) AND is_numeric($_GET['unLike']))
 if (isset($_POST['submit'])) {
     $Gallery->newComment($_POST['comment'], $postid);
     echo "<meta http-equiv='refresh' content='0'>";
+    // On nettoie le POST
 }
 
 if (isset($_POST['submit_sm']))
@@ -43,8 +48,10 @@ if (isset($_POST['submit_sm']))
 if (isset($_GET['delete_comment']) AND is_numeric($_GET['delete_comment']))
     $Gallery->deleteComment($_GET['delete_comment'], $postid);
 
-if (isset($_GET['action']) AND $_GET['action'] === 'delete')
+if (isset($_GET['action']) AND $_GET['action'] === 'delete') {
     $Gallery->deletePost($postid);
+    header('Location: gallery.php');
+}
 
 ?>
 <!DOCTYPE html>
@@ -53,7 +60,7 @@ if (isset($_GET['action']) AND $_GET['action'] === 'delete')
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title><?= $global['sitename'] ?> | TITRE DU POST</title>
+    <title><?= $global['sitename'] ?> | Publication</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/ionicons.min.css">

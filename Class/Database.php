@@ -94,7 +94,6 @@ class Database {
           `facebook` varchar(50) DEFAULT '',
           `description` text,
           `admin` int(1) DEFAULT '0',
-          `logged` int(1) DEFAULT '0',
           `banned` int(1) DEFAULT '0',
           `private` int(1) DEFAULT '0',
           `notifications` tinyint(1) NOT NULL DEFAULT '1',
