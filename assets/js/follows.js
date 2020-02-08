@@ -70,6 +70,13 @@ function unFollow() {
     xhr.open('GET', url);
     xhr.send();
 
-    document.location.reload(true);
+    let button = document.getElementById("buttonFollow");
+    button.setAttribute("class", "btn btn-primary");
+    button.setAttribute("onclick", "askFollow()");
+    button.innerHTML = "Suivre";
 
+    let followers = document.getElementById("followers").innerHTML;
+    followers = parseInt(followers);
+    followers = followers - 1;
+    document.getElementById("followers").innerHTML = followers;      
 }

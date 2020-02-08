@@ -1,7 +1,8 @@
 .register-photo {
   padding: 80px 0;
-  background-image: url('../img/ui/register/bg.jpg');
-  height: 1000px;
+  background: url('../img/ui/register/bg.jpg') no-repeat center;
+  background-size: cover;
+  height: 100vh;
 }
 
 .register-photo .image-holder {
@@ -85,7 +86,7 @@
 .nezuko {
   width: 191px;
   position: absolute;
-  margin-left: 30%;
+  margin-left: 40%;
   margin-top: -19.4em;
 }
 

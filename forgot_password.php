@@ -9,10 +9,8 @@ require_once('config/checkValid.php');
 
 $validkey = null;
 
-// Si l'utilisateur est connecté, on le redirige vers l'accueil
 if ($userid > 0)
     header('Location: index.php');
-
 $User = new App\Users($db, null, $global);
 
 if (isset($_POST['askPass']) AND isset($_POST['email']))

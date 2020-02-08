@@ -48,12 +48,6 @@ class Users {
 
     }
 
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-    /// GESTION DES COMPTES ADMINISTRATEUR ///
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-
     public function isAdmin($id) {
         $query = $this->db->query("SELECT id FROM wibuu_users WHERE admin = 1 AND id = $id");
         return ($query->rowCount());
@@ -85,17 +79,6 @@ class Users {
         else
             return -1;
     }
-
-    ///////////////////////////////////////
-    ///////////////////////////////////////
-    ///////////////////////////////////////
-    //////////////////////////////////////////
-
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-    /// Verification de l'utilisateur inscrit
-    //////////////////////////////////////////
-    //////////////////////////////////////////
 
     private function checkEmail_exists() {
         $checkEmail = $this->db->prepare('SELECT email FROM wibuu_users WHERE email = ?');
@@ -136,18 +119,6 @@ class Users {
         return $key;
     }
 
-
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-    /// Inscription de l'utilisateur       ///
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-
     public function createUser() {
 
         if ($this->global['enable_registration'] == 0) {
@@ -159,14 +130,15 @@ class Users {
             $this->alert = '<div class="alertmsg"><div class="alert alert-danger alertbox" role="alert"><span>Les mots de passes saisis sont différents !</span></div></div>';
             return null;
         }
-
-        $uppercase = preg_match('@[A-Z]@', $this->password);
-        $lowercase = preg_match('@[a-z]@', $this->password);
-        $number    = preg_match('@[0-9]@', $this->password);
-        $specialChars = preg_match('@[^\w]@', $this->password);
+        $uppercase = preg_match('[A-Z]+', $this->password);
+        $lowercase = preg_match('[a-z]+', $this->password);
+        $number    = preg_match('[0-9]+', $this->password);
+        $specialChars = preg_match('[^\w]+', $this->password);
 
         if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($this->password) < 8) {
-            $this->alert = '<div class="alertmsg"><div class="alert alert-danger alertbox" role="alert"><span>Votre mot de passe n\'est pas assez securisé !</span></div></div>';
+            $this->alert = '<div class="alertmsg"><div class="alert alert-danger"  role="alert">
+                    <span>Votre mot de passe doit contenir au moins une majuscule, une minuscule, <br/>un chiffre, un caractère special (autre qu\'une lettre ou un chiffre) <br/>et doit faire au moins 8 caractères de longueur .</span>
+                    </div></div>';
             return null;
         }
 
@@ -207,15 +179,6 @@ class Users {
         }
     }
 
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-    /// Connexion de l'utilisateur         ///
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-
     public function login() {
         $checklog = $this->db->prepare('SELECT password, id, registration_key, banned, admin FROM wibuu_users WHERE username = ?');
         $checklog->execute(array($this->username));
@@ -240,20 +203,12 @@ class Users {
         $this->alert = '<div class="alert alert-danger alertbloc" role="alert"><span>Identifiants incorrects</span></div>';
     }
 
-    // Recupérer les données de l'utilisateur connecté
     public function infoUsers($id) {
-        $datas = $this->db->prepare('SELECT username, email, avatar, twitter, instagram, facebook, description, private, notifications
+        $datas = $this->db->prepare('SELECT username, email, avatar, twitter, instagram, facebook, description, logged, private, notifications
                                     FROM wibuu_users WHERE id = ?');
         $datas->execute(array($id));
         return $datas->fetch(PDO::FETCH_ASSOC);
     }
-
-
-    //////////////////////////////////////////  
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-
-    // Fonction globale pour uploader un fichier
 
     public function uploadFile($file, $newName, $path, $legalExtensions, $legalSize, $outputExt) {
 
@@ -322,18 +277,17 @@ class Users {
                     if ($key == 'password') {
                         if ($post['password'] == $post['confirm_password']) {
 
-                            $uppercase = preg_match('@[A-Z]@', $post['password']);
-                            $lowercase = preg_match('@[a-z]@', $post['password']);
-                            $number    = preg_match('@[0-9]@', $post['password']);
-                            $specialChars = preg_match('@[^\w]@', $post['password']);
+                            $uppercase = preg_match('[A-Z]+', $post['password']);
+                            $lowercase = preg_match('[a-z]+', $post['password']);
+                            $number    = preg_match('[0-9]+', $post['password']);
+                            $specialChars = preg_match('[^\w]+', $post['password']);
 
                             if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($post['password']) < 8) {
-                                $this->alert = '<div class="col"><div class="alert alert-danger"  role="alert" style="width: 250px;margin-top: 16px;">
-                                        <span>Votre mot de passe n\'est pas assez sécurisé.</span>
-                                        </div></div>';
+                                $this->alert = '<div class="col"><div class="alert alert-danger"  role="alert">
+                                <span>Votre mot de passe doit contenir au moins une majuscule, une minuscule, <br/>un chiffre, un caractère special (autre qu\'une lettre ou un chiffre) <br/>et doit faire au moins 8 caractères de longueur .</span>
+                                </div></div>';
                                 return ;
                             }
-                            
                             $entry = password_hash($entry, PASSWORD_DEFAULT);
                         }
                         else {

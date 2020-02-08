@@ -8,10 +8,6 @@ require_once('Class/Gallery.php');
 require_once('config/database.php');
 require_once('config/checkValid.php');
 
-// La page est restreinte aux utilisateur connectés
-if ($userid == -1)
-    header('Location: /');
-
 $section = 'upload';
 
 if (!isset($_GET['type']) AND $_GET['type'] != 'webcam' AND $_GET['type'] != 'upload' AND $_GET['type'] != 'choice')
@@ -19,6 +15,8 @@ if (!isset($_GET['type']) AND $_GET['type'] != 'webcam' AND $_GET['type'] != 'up
 
 $type = htmlentities($_GET['type']);
 
+if ($userid == -1)
+    header('Location: index.php');
 
 $uploadPicture = new App\Gallery($db, $global);
 
@@ -78,8 +76,15 @@ if (isset($_POST['x_pos'])) {
     <?= $FrontManagment->footer(); ?>
 
 </body>
-
 <script src="/assets/js/dropdown.js"></script>
 <script src="/assets/js/montage.js"></script>
+<script>
+
+</script>
+
+<script type="text/javascript">
+
+</script>
+
 
 </html>

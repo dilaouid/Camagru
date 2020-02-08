@@ -4,6 +4,7 @@
 namespace App;
 use \PDO;
 
+
 require_once($_SERVER['DOCUMENT_ROOT'].'/Class/Users.php');
 
 class AdminManagment extends Users {
@@ -57,11 +58,17 @@ class AdminManagment extends Users {
         return $Content.'</div>';
     }
 
-    private function formCheck($id, $name, $label, $checked) {
+    private function formCheck($id, $name, $label, $checked, $col = 0) {
         $check = null;
         if ($checked == 1)
             $check = 'checked';
-        return '<div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" id="'.$id.'" name="'.$name.'" '.$check.'><label class="form-check-label" for="'.$id.'">'.$label.'</label></div></div>';
+        $start = null;
+        $end = null;
+        if ($col == 0) {
+            $start = '<div class="col">';
+            $end = '</div>';
+        }
+        return $start.'<div class="form-check"><input class="form-check-input" type="checkbox" id="'.$id.'" name="'.$name.'" '.$check.'><label class="form-check-label" for="'.$id.'">'.$label.'</label></div>'.$end;
     }
 
     public function globalParam() {
@@ -98,8 +105,10 @@ class AdminManagment extends Users {
             if (in_array($key, $availableKeys)) {
                 if ($key == 'short_about_us')
                     $value = nl2br($value);
-                $query = $this->db->prepare("UPDATE wibuu_global SET $key = ?");
-                $query->execute(array($value));
+                if (strlen($value) > 0 AND !ctype_space($value)) {
+                    $query = $this->db->prepare("UPDATE wibuu_global SET $key = ?");
+                    $query->execute(array($value));
+                }
             }
         }
         if (!isset($post['enable_registration']))
@@ -150,6 +159,7 @@ class AdminManagment extends Users {
             $title = $data['title'];
             $btn = 'Je change d\'avis comme de Pipimi';
         }
+
 
         $Content = '<h4 class="card-title">'.$option.'</h4><form method="post" action=""><div class="form-row justify-content-center"><div class="col-5"><div class="form-group"><label>Icone font awesome</label><input class="form-control" type="text" placeholder="Exemple : fa-video-camera" name="icon" required value="'.$icon.'"></div></div><div class="col-5"><div class="form-group"><label>Titre de votre feature</label><input class="form-control" type="text" name="title" required value="'.$title.'"></div></div></div><div class="form-row justify-content-center"><div class="col-10"><div class="form-group"><label>Description de la feature</label><textarea class="form-control form-control-lg" name="description" required="">'.$description.'</textarea></div></div><div class="row">';
 
@@ -244,5 +254,30 @@ class AdminManagment extends Users {
                 return ;
         }
     }
+
+
+    public function editUserForm($section, $id) {
+        if ($section != 'edit' OR $id == 0)
+            return ;
+        $checkUserExist = $this->db->query("SELECT username, email, description, private, admin, banned FROM wibuu_users WHERE id = $id");
+        if ($checkUserExist->rowCount() == 0) {
+            exit();
+            header('Location: users.php');
+        }
+        $userDatas = $checkUserExist->fetch(PDO::FETCH_ASSOC);
+        $Content = '<div class="card-group" style="margin-bottom: 15px;"><div class="card"><div class="card-body"><h4 class="card-title">Modifier un utilisateur</h4><form method="post" action=""><div class="form-row justify-content-center">';
+        $Content .= $this->formGroup('Nom d\'utilisateur', 'username', $userDatas['username']);
+        $Content .= $this->formGroup('Adresse e-mail', 'email', $userDatas['email']);
+        $Content .= $this->formGroup('Description', 'description', $userDatas['description'], null, 1).'</div>';
+        $Content .= $this->formCheck('adminCheck', 'admin', 'Administrateur', $userDatas['admin'], 0);
+        $Content .= $this->formCheck('banCheck', 'banned', 'Banni', $userDatas['banned'], 0);
+        $Content .= $this->formCheck('privCheck', 'private', 'Privé', $userDatas['private'], 0);
+
+        $Content .= '</div></div><div class="row"><div class="col" style="margin-top: 21px;"><button class="btn btn-danger btn-block" type="submit" name="submit">Changer l\'utilisateur</button></div></div></form></div></div></div></div>';
+
+        return $Content;
+
+    }
+
 
 }

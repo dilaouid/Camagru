@@ -10,35 +10,39 @@ require_once('Class/Users.php');
 require_once('config/database.php');
 require_once('config/checkValid.php');
 
-// Si on a pas spécifié l'id dans les query string, on redirige vers l'index
 if (!isset($_GET['id']))
-    header('Location: /');
+    header('Location: index.php');
 
 $profilePage = new App\Checkdatas($db);
 
 $id = htmlentities($_GET['id']);
 
-// On vérifie si l'utilisateur existe
 if ($profilePage->check_qs_exists($id, 'wibuu_users') == 0)
-    header('Location: /');
+    header('Location: index.php');
 
 $section = 'profile';
 
 $User = new App\Users($db, null, $global);
 
-if (isset($_GET['askFollow']) AND $userid != $id AND $userid != -1)
+if (isset($_GET['askFollow']) AND $userid != $id AND $userid != -1) {
     $User->askFollow($userid, $id);
+    exit();
+}
 
-if (isset($_GET['acceptFollow']) AND $userid != $id AND $userid != -1)
+if (isset($_GET['acceptFollow']) AND $userid != $id AND $userid != -1) {
     $User->acceptFollow($userid, $id);
+    exit();
+}
 
 if (isset($_GET['unFollow']) AND $userid != $id AND $userid != -1) {
     $User->unFollow($userid, $id);
     exit();
 }
 
-if (isset($_GET['stopFollow']) AND $userid != $id AND $userid != -1)
+if (isset($_GET['stopFollow']) AND $userid != $id AND $userid != -1) {
     $User->stopFollow($userid, $id);
+    exit();
+}
 
 ?>
 
@@ -80,7 +84,7 @@ if (isset($_GET['stopFollow']) AND $userid != $id AND $userid != -1)
 
 </body>
 
-<script src="assets/js/follows.js"></script>
+<script src="/assets/js/follows.js"></script>
 <script src="/assets/js/dropdown.js"></script>
 
 </html>

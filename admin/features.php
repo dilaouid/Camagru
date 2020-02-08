@@ -75,7 +75,7 @@ if (isset($_POST['submit'])) {
             <div class="row">
                 <div class="col">
                     <div class="row justify-content-center align-items-center">
-                        <div class="col-auto"><img src="../assets/img/ui/features.png" style="width: 157px;"></div>
+                        <div class="col-auto"><img src="/assets/img/ui/features.png" style="width: 157px;"></div>
                     </div>
 
                     <div class="row">

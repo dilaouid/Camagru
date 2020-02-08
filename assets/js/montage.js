@@ -27,7 +27,8 @@ navigator.mediaDevices.getUserMedia(constraints).
   then((stream) => {
     video.srcObject = stream
 });}
-function changeFilter(id) {
+
+    function changeFilter(id) {
         var allFilters = document.getElementsByName('filterList');
         i = 0;
         while (allFilters[i]) {
@@ -67,3 +68,4 @@ function changeFilter(id) {
 
 
   var inputFile = document.getElementsByName('image')[0];
+  

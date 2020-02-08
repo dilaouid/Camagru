@@ -70,7 +70,7 @@ if (isset($_POST['submit'])) {
                 <div class="form-group">
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" name="cgu" type="checkbox">J'acceptes les <a href="#" target="_blank" required>conditions générales d'utilisations</a>
+                            <input class="form-check-input" name="cgu" type="checkbox">J'accepte les <a href="/cgu.pdf" target="_blank" required>conditions générales d'utilisations</a>
                         </label>
                     </div>
                 </div>

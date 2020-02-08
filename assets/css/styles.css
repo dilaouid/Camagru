@@ -1,8 +1,8 @@
 .header {
 	background-image: url('../img/ui/index/banner.jpg');
 	padding: 49;
-	width: 100%;
-	max-width: 100%;
+	width: 2560px;
+	height: 400px;
 	padding-top: 400px;
 	background-size: cover;
 	background-repeat: no-repeat;

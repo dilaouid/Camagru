@@ -14,7 +14,6 @@ if (isset($_GET['logout']) AND isset($_SESSION['id'])) {
     header('Location: index.php');
 }
 
-
 $section = 'index';
 
 $User = new App\Users($db, null, $global);
