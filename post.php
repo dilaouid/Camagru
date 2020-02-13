@@ -16,8 +16,10 @@ $section = 'gallery';
 
 if (isset($_GET['id']) AND is_numeric($_GET['id']))
     $postid = $_GET['id'];
-else
+else {
     header('Location: gallery.php');
+    exit();
+}
 
 $key = null;
 if (isset($_GET['key']))
@@ -32,7 +34,7 @@ if (isset($_GET['like']) AND is_numeric($_GET['like']))
 if (isset($_GET['unLike']) AND is_numeric($_GET['unLike']))
     $Gallery->unLike($_GET['unLike']);
 
-if (isset($_POST['submit']) AND strlen($_POST['comment']) > 3) {
+if (isset($_POST['submit']) AND strlen($_POST['comment']) > 0) {
     if (!ctype_space($_POST['comment'])) {
         $Gallery->newComment($_POST['comment'], $postid);
         if (!empty($Gallery->alert))
@@ -46,8 +48,11 @@ if (isset($_POST['submit_sm']))
 if (isset($_GET['delete_comment']) AND is_numeric($_GET['delete_comment']))
     $Gallery->deleteComment($_GET['delete_comment'], $postid);
 
-if (isset($_GET['action']) AND $_GET['action'] === 'delete')
+if (isset($_GET['action']) AND $_GET['action'] === 'delete') {
     $Gallery->deletePost($postid);
+    header('Location: gallery.php');
+    exit();
+}
 
 $postPage = $db->query("SELECT title FROM wibuu_posts WHERE id = $postid");
 $titlePage = $postPage->fetch()[0];

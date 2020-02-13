@@ -9,8 +9,10 @@ require_once('config/checkValid.php');
 
 $validkey = null;
 
-if ($userid > 0)
+if ($userid > 0){
     header('Location: index.php');
+    exit();
+}
 $User = new App\Users($db, null, $global);
 
 if (isset($_POST['askPass']) AND isset($_POST['email']))
@@ -18,14 +20,18 @@ if (isset($_POST['askPass']) AND isset($_POST['email']))
 
 if (isset($_GET['key'])) {
     $validkey = $User->validKey($_GET['key']);
-    if ($validkey == 0)
-        header('Location: index.php');
+    if ($validkey == 0){
+        header('Location: login.php');
+        exit();
+    }
 }
 
 if (isset($_POST['new_pass']) AND isset($_POST['password']) AND isset($_POST['confirm_password'])) {
     $User->newPassword($_POST['password'], $_POST['confirm_password'], $_GET['key']);
-    if (!isset($User->alert))
+    if (!isset($User->alert)){
         header('Location: login.php');
+        exit();
+    }
 }
 
 $stylebtn = 'background-color: rgb(74,74,74);margin: 92px;margin-top: -17px;margin-bottom: -28px;width: 49px;';

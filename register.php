@@ -8,8 +8,10 @@ require_once('Class/Users.php');
 require_once('config/database.php');
 require_once('config/checkValid.php');
 
-if ($userid > 0)
+if ($userid > 0){
     header('Location: index.php');
+    exit();
+}
 
 if (isset($_POST['submit'])) {
     $newUser = new App\Users($db, $_POST, $global);
@@ -48,39 +50,23 @@ if (isset($_POST['submit'])) {
 
         <div class="align-items-center order-2 form-container" style="">
             <div class="image-holder bloc"></div>
-            <form class="text-white-50" method="post" action="" style="background-color: rgb(51,51,51);opacity: 0.95;color: rgb(200,200,200);">
+            <form class="text-white-50 register-form" method="post" action="">
                 <h2 class="text-center">Nous <strong>rejoindre</strong></h2>
 
-                <div class="form-group">
-                    <input class="form-control fieldinp" type="username" name="username" placeholder="Nom d'utilisateur" style="color: rgb(51,51,51);" required>
-                </div>
+                <input class="form-control fieldinp" type="username" name="username" placeholder="Nom d'utilisateur" required>
+                <input class="form-control" type="email" name="email" placeholder="Email" required>
+                <input class="form-control" type="password" name="password" placeholder="Mot de passe" required>
+                <input class="form-control" type="password" name="confirm_password" placeholder="Confirmer le mot de passe" required>
 
-                <div class="form-group">
-                    <input class="form-control" type="email" name="email" placeholder="Email" style="color: rgb(51,51,51);" required>
-                </div>
-
-                <div class="form-group">
-                    <input class="form-control" type="password" name="password" placeholder="Mot de passe" style="color: rgb(51,51,51);" required>
-                </div>
-
-                <div class="form-group text-primary">
-                    <input class="form-control" type="password" name="confirm_password" placeholder="Confirmer le mot de passe" style="color: rgb(51,51,51);" required>
-                </div>
-
-                <div class="form-group">
                     <div class="form-check">
                         <label class="form-check-label">
                             <input class="form-check-input" name="cgu" type="checkbox">J'accepte les <a href="/cgu.pdf" target="_blank" required>conditions générales d'utilisations</a>
                         </label>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <button class="btn btn-primary btn-block" name="submit" type="submit">Nous rejoindre</button>
-                </div>
+                <button class="btn btn-primary btn-block" name="submit" type="submit">Nous rejoindre</button>
 
                 <a class="already" href="login.php">Vous avez déjà un compte ?</a></form>
-
         </div>
     </div>
 </body>

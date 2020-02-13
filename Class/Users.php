@@ -130,14 +130,14 @@ class Users {
             $this->alert = '<div class="alertmsg"><div class="alert alert-danger alertbox" role="alert"><span>Les mots de passes saisis sont différents !</span></div></div>';
             return null;
         }
-        $uppercase = preg_match('[A-Z]+', $this->password);
-        $lowercase = preg_match('[a-z]+', $this->password);
-        $number    = preg_match('[0-9]+', $this->password);
-        $specialChars = preg_match('[^\w]+', $this->password);
+        $uppercase = preg_match('@[A-Z]@', $this->password);
+        $lowercase = preg_match('@[a-z]@', $this->password);
+        $number    = preg_match('@[0-9]@', $this->password);
+        $specialChars = preg_match('@[^\w]@', $this->password);
 
         if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($this->password) < 8) {
             $this->alert = '<div class="alertmsg"><div class="alert alert-danger"  role="alert">
-                    <span>Votre mot de passe doit contenir au moins une majuscule, une minuscule, <br/>un chiffre, un caractère special (autre qu\'une lettre ou un chiffre) <br/>et doit faire au moins 8 caractères de longueur .</span>
+                    <span>Votre mot de passe doit contenir au moins une majuscule, une minuscule, <br/>un chiffre, un caractère special (autre qu\'une lettre ou un chiffre) <br/>et doit faire au moins 8 caractères de longueur.</span>
                     </div></div>';
             return null;
         }
@@ -204,7 +204,7 @@ class Users {
     }
 
     public function infoUsers($id) {
-        $datas = $this->db->prepare('SELECT username, email, avatar, twitter, instagram, facebook, description, logged, private, notifications
+        $datas = $this->db->prepare('SELECT username, email, avatar, twitter, instagram, facebook, description, private, notifications
                                     FROM wibuu_users WHERE id = ?');
         $datas->execute(array($id));
         return $datas->fetch(PDO::FETCH_ASSOC);
@@ -277,14 +277,14 @@ class Users {
                     if ($key == 'password') {
                         if ($post['password'] == $post['confirm_password']) {
 
-                            $uppercase = preg_match('[A-Z]+', $post['password']);
-                            $lowercase = preg_match('[a-z]+', $post['password']);
-                            $number    = preg_match('[0-9]+', $post['password']);
-                            $specialChars = preg_match('[^\w]+', $post['password']);
+                            $uppercase = preg_match('@[A-Z]@', $post['password']);
+                            $lowercase = preg_match('@[a-z]@', $post['password']);
+                            $number    = preg_match('@[0-9]@', $post['password']);
+                            $specialChars = preg_match('@[^\w]@', $post['password']);
 
                             if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($post['password']) < 8) {
                                 $this->alert = '<div class="col"><div class="alert alert-danger"  role="alert">
-                                <span>Votre mot de passe doit contenir au moins une majuscule, une minuscule, <br/>un chiffre, un caractère special (autre qu\'une lettre ou un chiffre) <br/>et doit faire au moins 8 caractères de longueur .</span>
+                                <span>Votre mot de passe doit contenir au moins une majuscule, une minuscule, <br/>un chiffre, un caractère special (autre qu\'une lettre ou un chiffre) <br/>et doit faire au moins 8 caractères de longueur.</span>
                                 </div></div>';
                                 return ;
                             }

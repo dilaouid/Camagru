@@ -7,6 +7,8 @@ const constraints = {
     var submitButton = document.getElementById('submit');
     if (screenshotButton) {
   screenshotButton.onclick = video.onclick = function() {
+    if (video.videoWidth == 0|| video.videoHeight == 0)
+      return ;
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
   canvas.getContext('2d').drawImage(video, 0, 0);
@@ -21,7 +23,6 @@ const constraints = {
   let checkFilterSelected = document.getElementsByClassName('border rounded border-warning')[0];
   if (checkFilterSelected)
     submitButton.setAttribute("style", "margin-bottom: 36px;");
-
 };
 navigator.mediaDevices.getUserMedia(constraints).
   then((stream) => {

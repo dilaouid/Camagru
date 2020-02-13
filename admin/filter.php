@@ -9,21 +9,36 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Class/Users.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/database.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/checkValid.php');
 
-if (!isset($userid))
+if (!isset($userid)){
     header('Location: /index.php');
+    exit();
+}
+
 
 $AdminManagment = new App\AdminManagment($db, $global);
-if ($AdminManagment->admin == 0)
+if ($AdminManagment->admin == 0) {
     header('Location: /index.php');
+    exit();
+}
 
 $section = 'Nouveau filtre';
 
 $User = new App\Users($db, null, $global);
 
+$alert = "";
+
 if (isset($_POST['submit'])) {
-    if ($_FILES['filtre']['size'] == 0)
-        return ;
-    $AdminManagment->newFilter($_POST, $_FILES['filtre']);
+    if ($_FILES['filtre']['size'] == 0) {
+        $AdminManagment->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>Le fichier envoyé est invalide</span></div></div>';
+    }
+    else if (strlen($_POST['name']) > 50) {
+        $AdminManagment->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>Le nom ne doit pas depasser 50 caracteres</span></div></div>';
+    }
+    else if (preg_match('@[^\w]@', $_POST['name']) == 1) {
+        $AdminManagment->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>Le nom du filtre ne peut contenir que des lettres et chiffres</span></div></div>';
+    }
+    else if ($AdminManagment->newFilter($_POST, $_FILES['filtre']))
+        $AdminManagment->alert = '<div class="col"><div class="alert alert-success" role="alert" style="width: 100%;margin-top: 24px;"><span>Filtre crée avec succès</span></div></div>';
 }
 
 ?>

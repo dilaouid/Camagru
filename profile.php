@@ -10,15 +10,19 @@ require_once('Class/Users.php');
 require_once('config/database.php');
 require_once('config/checkValid.php');
 
-if (!isset($_GET['id']))
+if (!isset($_GET['id'])){
     header('Location: index.php');
+    exit();
+}
 
 $profilePage = new App\Checkdatas($db);
 
 $id = htmlentities($_GET['id']);
 
-if ($profilePage->check_qs_exists($id, 'wibuu_users') == 0)
+if ($profilePage->check_qs_exists($id, 'wibuu_users') == 0){
     header('Location: index.php');
+    exit();
+}
 
 $section = 'profile';
 
@@ -69,11 +73,8 @@ if (isset($_GET['stopFollow']) AND $userid != $id AND $userid != -1) {
     <?= $FrontManagment->navbar($userid, $section); ?>
 
     <div>
-
         <div class="row" style="background-color: #e0e0e0;">
-
             <?= $profilePage->getInfos(); ?>
-
         </div>
 
         <?= $profilePage->privateProfile(); ?>

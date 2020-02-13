@@ -34,7 +34,7 @@ class Database {
 
     public function query($statement, $classname, $single = false, $fetchDatas = false) {
 
-        $req 	= $this->getPDO()->query($statement);
+        $req  = $this->getPDO()->query($statement);
         if ($fetchDatas === TRUE) {
             $req->setFetchMode(PDO::FETCH_CLASS, $classname);
             if ($single) {
@@ -45,12 +45,6 @@ class Database {
             return $data;
         }
 
-    }
-
-    public function query_new($statement) {
-        $req = $this->getPDO()->query($statement);
-        $datas = $req->fetchAll(PDO::FETCH_ASSOC);
-        return $datas;
     }
 
     public function prepare($statement, $attributes, $classname, $single = false) {
@@ -68,7 +62,7 @@ class Database {
     public static function createTables($database) {
 
         $database->query("DROP TABLE IF EXISTS `wibuu_global`;
-        CREATE TABLE IF NOT EXISTS `wibuu_global` (
+        CREATE TABLE `wibuu_global` (
           `sitename` varchar(15) DEFAULT 'Wibuu',
           `subtitle_index` varchar(40) DEFAULT '',
           `short_about_us` text,
@@ -83,10 +77,10 @@ class Database {
         $database->query('INSERT INTO wibuu_global (short_about_us, subtitle_index) VALUES ("Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac sem lacus. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo.", "Weeb comme tu es !")', 'App\Database', true);
 
         $database->query("DROP TABLE IF EXISTS `wibuu_users`;
-        CREATE TABLE IF NOT EXISTS `wibuu_users` (
+        CREATE TABLE `wibuu_users` (
           `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
           `username` varchar(15) DEFAULT NULL,
-          `password` varchar(255) DEFAULT NULL,
+          `password` varchar(64) DEFAULT NULL,
           `email` varchar(30) DEFAULT NULL,
           `avatar` varchar(60) DEFAULT 'default.jpg',
           `twitter` varchar(30) DEFAULT '',
@@ -94,7 +88,6 @@ class Database {
           `facebook` varchar(50) DEFAULT '',
           `description` text,
           `admin` int(1) DEFAULT '0',
-          `logged` int(1) DEFAULT '0',
           `banned` int(1) DEFAULT '0',
           `private` int(1) DEFAULT '0',
           `notifications` tinyint(1) NOT NULL DEFAULT '0',
@@ -104,7 +97,7 @@ class Database {
         COMMIT;", 'App\Database', true);
 
         $database->query("DROP TABLE IF EXISTS `wibuu_posts`;
-        CREATE TABLE IF NOT EXISTS `wibuu_posts` (
+        CREATE TABLE `wibuu_posts` (
           `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
           `title` varchar(20) DEFAULT NULL,
           `description` varchar(255) DEFAULT NULL,
@@ -122,7 +115,7 @@ class Database {
         COMMIT;", 'App\Database', true);
 
         $database->query("DROP TABLE IF EXISTS `wibuu_notifications`;
-        CREATE TABLE IF NOT EXISTS `wibuu_notifications` (
+        CREATE TABLE `wibuu_notifications` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `author` int(6) NOT NULL,
           `dest` int(6) NOT NULL,
@@ -134,17 +127,9 @@ class Database {
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
         COMMIT;", 'App\Database', true);
-
-        $database->query("DROP TABLE IF EXISTS `wibuu_partner`;
-        CREATE TABLE IF NOT EXISTS `wibuu_partner` (
-          `id` int(11) NOT NULL AUTO_INCREMENT,
-          `url` varchar(160) NOT NULL,
-          PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-        COMMIT;", 'App\Database', true);
-
+        
         $database->query("DROP TABLE IF EXISTS `wibuu_features`;
-        CREATE TABLE IF NOT EXISTS `wibuu_features` (
+        CREATE TABLE `wibuu_features` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `title` varchar(60) NOT NULL,
           `description` text NOT NULL,
@@ -154,7 +139,7 @@ class Database {
         COMMIT;", 'App\Database', true);
 
         $database->query("DROP TABLE IF EXISTS `wibuu_comments`;
-        CREATE TABLE IF NOT EXISTS `wibuu_comments` (
+        CREATE TABLE `wibuu_comments` (
           `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
           `author` int(6) DEFAULT NULL,
           `post` int(11) NOT NULL,
@@ -166,7 +151,7 @@ class Database {
         COMMIT;", 'App\Database', true);
 
         $database->query("DROP TABLE IF EXISTS `wibuu_follows`;
-        CREATE TABLE IF NOT EXISTS `wibuu_follows` (
+        CREATE TABLE `wibuu_follows` (
           `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
           `user` int(6) DEFAULT NULL,
           `follows` int(6) DEFAULT NULL,
@@ -176,7 +161,7 @@ class Database {
         COMMIT;", 'App\Database', true);
 
         $database->query("DROP TABLE IF EXISTS `wibuu_likes`;
-        CREATE TABLE IF NOT EXISTS `wibuu_likes` (
+        CREATE TABLE `wibuu_likes` (
           `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
           `user` int(6) DEFAULT NULL,
           `likes` int(6) DEFAULT NULL,
@@ -184,15 +169,15 @@ class Database {
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8;", 'App\Database', true);
 
         $database->query("DROP TABLE IF EXISTS `wibuu_filters`;
-        CREATE TABLE IF NOT EXISTS `wibuu_filters` (
+        CREATE TABLE`wibuu_filters` (
           `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
-          `name` varchar(15) DEFAULT NULL,
+          `name` varchar(50) DEFAULT NULL,
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
         COMMIT;", 'App\Database', true);
         
         $database->query("DROP TABLE IF EXISTS `wibuu_password`;
-        CREATE TABLE IF NOT EXISTS `wibuu_password` (
+        CREATE TABLE `wibuu_password` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `user` int(11) NOT NULL,
           `keylock` varchar(255) NOT NULL,

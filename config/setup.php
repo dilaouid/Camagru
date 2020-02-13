@@ -1,8 +1,10 @@
 <?php
 
 $config_file = file("database.php");
-if (count($config_file) === 5)
+if (count($config_file) === 5) {
     header('Location: create_admin.php');
+    exit();
+}
 
 require '../Class/Config/Form.php';
 require '../Class/Database.php';
@@ -33,7 +35,7 @@ if (isset($_POST['submit'])){
     $createTable = $database::createTables($database);
 
     if (isset($count)) {
-        $file_config = fopen('database.php', 'r+');
+        $file_config = fopen('database.php', 'w+');
 
         fputs($file_config, "<?php
         \$DB_DSN = \"mysql:dbname=" . $db . ";host=" . $host . "\";
@@ -42,6 +44,7 @@ if (isset($_POST['submit'])){
 ?>");
         fclose($file_config);
         header('Location: create_admin.php');
+        exit();
     }
     unset($_POST);
 }

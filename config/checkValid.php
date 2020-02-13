@@ -1,18 +1,25 @@
 <?php
-if (!isset($DB_DSN) || !isset($USER_DB) || !isset($PASSWORD_DB))
+if (!isset($DB_DSN) || !isset($USER_DB) || !isset($PASSWORD_DB)) {
     header('Location: /config/setup.php');
+	exit();
+}
+
 
 try {
     $db = new PDO($DB_DSN, $USER_DB, $PASSWORD_DB);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $ex){
-    die(header('Location: /config/setup.php'));
+    header('Location: /config/setup.php');
+	exit();
 }
 
-$checkDatabase = $db->query('SELECT COUNT(id) FROM wibuu_users WHERE admin = 1');
+
+$checkDatabase = $db->query('SELECT id FROM wibuu_users WHERE admin = 1');
 $data = $checkDatabase->fetch();
-if ($data[0] == 0)
+if ($data[0] == 0) {
     header('Location: /config/create_admin.php');
+	exit();
+}
 
 $global_query = $db->query('SELECT * FROM wibuu_global');
 $global = $global_query->fetch(PDO::FETCH_ASSOC);
@@ -30,6 +37,7 @@ if (!isset($loginpage) && $global['maintenance'] == 1)
 
 if (isset($forbiddenpage) AND (!$FrontManagment->isAdmin($userid))) {
 	header('Location: maintenance.php');
+	exit();
 }
 
 ?>

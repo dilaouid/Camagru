@@ -9,12 +9,18 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Class/Users.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/database.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/checkValid.php');
 
-if (!isset($userid))
+if (!isset($userid) || !isset($_SESSION['id'])){
     header('Location: /index.php');
+    exit();
+}
+
 
 $AdminManagment = new App\AdminManagment($db, $global);
-if ($AdminManagment->admin == 0)
+if ($AdminManagment->admin == 0){
     header('Location: /index.php');
+    exit();
+}
+
 
 $section = 'Panneau de contrôle';
 

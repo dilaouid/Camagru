@@ -9,13 +9,17 @@ require_once('Class/Users.php');
 require_once('config/database.php');
 require_once('config/checkValid.php');
 
-if ($userid > 0)
+if ($userid > 0){
     header('Location: index.php');
+    exit();
+}
 
 if (isset($_POST['submit'])) {
     $User = new App\Users($db, $_POST, $global);
-    if ($User->login() == 1)
+    if ($User->login() == 1){
         header('Location: index.php');
+        exit();
+    }
 }
 
 $stylebtn = 'background-color: rgb(74,74,74);margin: 92px;margin-top: -17px;margin-bottom: -28px;width: 49px;';

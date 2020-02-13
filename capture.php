@@ -10,13 +10,19 @@ require_once('config/checkValid.php');
 
 $section = 'upload';
 
-if (!isset($_GET['type']) AND $_GET['type'] != 'webcam' AND $_GET['type'] != 'upload' AND $_GET['type'] != 'choice')
-    header('Location: index.php');
+if (!isset($_GET['type']) AND $_GET['type'] != 'webcam' AND $_GET['type'] != 'upload' AND $_GET['type'] != 'choice'){
+    header('Location: /index.php');
+    exit();
+}
+
 
 $type = htmlentities($_GET['type']);
 
-if ($userid == -1)
-    header('Location: index.php');
+if ($userid == -1){
+    header('Location: /index.php');
+    exit();
+}
+
 
 $uploadPicture = new App\Gallery($db, $global);
 

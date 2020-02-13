@@ -18,17 +18,6 @@ class FrontManagment {
             $this->userid = $_SESSION['id'];
     }
 
-    public function partners() {
-    	$nbPartners_query = $this->db->query('SELECT * FROM wibuu_partner');
-    	if ($nbPartners_query->rowCount() > 0) {
-    		$Content = '<div class="brands"><div class="text-center brand_bloc"><h1 class="display-4 text-uppercase text-white-50 title_brands">Nos partenaires</h1>';
-    		while ($data = $nbPartners_query->fetch()) {
-    			$Content .= '<a href="'. $data['url'] .'" target="_blank" style="display: inline;"><img src="assets/img/brands/brand_'. $data['id'] .'.png" class="brand"></a>';
-    		}
-    		return $Content .'</div></div>';
-    	}
-    }
-
     private function lastpublication() {
     	$lastpublication = $this->db->query('SELECT id, author FROM wibuu_posts WHERE private = 0 AND active = 1 ORDER BY date DESC LIMIT 1 OFFSET 0');
         $return = $lastpublication->fetch(PDO::FETCH_ASSOC);
@@ -151,7 +140,7 @@ class FrontManagment {
         $Content .= self::socialnetwork_footer($this->global).'</div>';
         if ($this->isAdmin($this->userid))
             $Content .= '<div class="col text-center"><a href="/admin" class="text-white">administration</a></div>';
-        $Content .= '<p class="copyright">'.$this->global['sitename'] .' © 2019</p></div></footer></div>';
+        $Content .= '<p class="copyright">'.$this->global['sitename'] .' © 2020</p></div></footer></div>';
     	return $Content;
     }
 

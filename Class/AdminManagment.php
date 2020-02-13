@@ -125,21 +125,21 @@ class AdminManagment extends Users {
 
         if (strlen($post['name']) < 3) {
             $this->alert = $this->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>Le nom du filtre est trop court !</span></div></div>';
-            return ;
+            return 0;
         }
         $query = $this->db->query("SELECT id FROM wibuu_filters");
 
         $newId = $query->rowCount() + 1;
         if ($this->uploadFile($file, 'filter_'.$newId, '../assets/img/filters', array('png'), 700000, 'png') == 0) {
             $this->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>Une erreur est survenue lors de l\'envoi du fichier.</span></div></div>';
-            return ;
+            return 0;
         }
 
         $name = htmlentities($post['name']);
 
         $insert = $this->db->prepare("INSERT INTO wibuu_filters (name) VALUES (?)");
         $insert->execute(array($name));
-
+        return 1;
     }
 
 
@@ -151,8 +151,10 @@ class AdminManagment extends Users {
         $btn = 'Oui, on fait ca nous ! BAH OUI !';
         if (isset($id) AND $id != 0 AND $page == 'edit') {
             $query = $this->db->query("SELECT title, description, icon FROM wibuu_features WHERE id = $id");
-            if ($query->rowCount() == 0 AND $page == 'edit')
+            if ($query->rowCount() == 0 AND $page == 'edit'){
                 header('Location: features.php?option=create');
+                exit();
+            }
             $data = $query->fetch(PDO::FETCH_ASSOC);
             $icon = $data['icon'];
             $description = $data['description'];
@@ -261,8 +263,8 @@ class AdminManagment extends Users {
             return ;
         $checkUserExist = $this->db->query("SELECT username, email, description, private, admin, banned FROM wibuu_users WHERE id = $id");
         if ($checkUserExist->rowCount() == 0) {
-            exit();
             header('Location: users.php');
+            exit();
         }
         $userDatas = $checkUserExist->fetch(PDO::FETCH_ASSOC);
         $Content = '<div class="card-group" style="margin-bottom: 15px;"><div class="card"><div class="card-body"><h4 class="card-title">Modifier un utilisateur</h4><form method="post" action=""><div class="form-row justify-content-center">';

@@ -7,8 +7,10 @@ require_once('Class/FrontManagment.php');
 require_once('Class/Gallery.php');
 require_once('config/database.php');
 
-if (!isset($DB_DSN) || !isset($USER_DB) || !isset($PASSWORD_DB))
+if (!isset($DB_DSN) || !isset($USER_DB) || !isset($PASSWORD_DB)){
     header('Location: /config/setup.php');
+    exit();
+}
 
 try {
     $db = new PDO($DB_DSN, $USER_DB, $PASSWORD_DB);

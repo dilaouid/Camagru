@@ -9,26 +9,34 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Class/Users.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/database.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/checkValid.php');
 
-if (!isset($userid))
+if (!isset($userid)) {
     header('Location: /index.php');
+    exit();
+}
 $AdminManagment = new App\AdminManagment($db, $global);
-if ($AdminManagment->admin == 0)
+if ($AdminManagment->admin == 0){
     header('Location: /index.php');
+    exit();
+}
 
 $section = 'Features';
 
 $User = new App\Users($db, null, $global);
 
-if (!isset($_GET['option']) OR ($_GET['option'] != 'edit' AND $_GET['option'] != 'create'))
-    header('Location : index.php');
+if (!isset($_GET['option']) OR ($_GET['option'] != 'edit' AND $_GET['option'] != 'create')){
+    header('Location: /index.php');
+    exit();
+}
 
 if ($_GET['option'] == 'edit')
     $option = "Éditer une feature";
 else
     $option = "Gérer les features";
 
-if ($_GET['option'] == 'edit' AND (!isset($_GET['id']) OR !is_numeric($_GET['id'])))
-    header('Location: features.php?option=create');
+if ($_GET['option'] == 'edit' AND (!isset($_GET['id']) OR !is_numeric($_GET['id']))){
+    header('Location: /features.php?option=create');
+    exit();
+}
 
 $id = 0;
 if (isset($_GET['id']))

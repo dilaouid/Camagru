@@ -108,3 +108,14 @@
   max-width: 400px;
   min-width: 400px;
 }
+
+.register-photo form {
+  background-color: rgb(51,51,51);
+  opacity: 0.95;
+  color: rgb(200,200,200);
+}
+.register-photo form input, .register-photo form button {
+  color: rgb(51,51,51)!important;
+  display:block;
+  margin-bottom: 1rem;
+}

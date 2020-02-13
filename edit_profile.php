@@ -11,8 +11,10 @@ require_once('config/database.php');
 require_once('config/checkValid.php');
 require_once('config/func.php');
 
-if ($userid == -1)
+if ($userid == -1){
     header('Location: login.php');
+    exit();
+}
 
 $FrontManagment = new App\FrontManagment($db, $global);
 $section = 'profile';

@@ -528,7 +528,7 @@ class Gallery {
                                 <a href="login.php">Connectez vous</a> pour interagir</p>
                             </div>
                         </div>';
-            $Content .= '</div></div></div></div><div class="col-3 col-md-6 col-lg-6 col-xl-3 d-none d-print-inline d-sm-none d-md-inline d-lg-inline d-xl-inline"><div style="height: 687px;"><div style="height: 687px;">
+            $Content .= '</div></div></div></div><div class="col-3 col-md-6 col-lg-6 col-xl-3 d-none d-print-inline d-sm-none d-md-inline d-lg-inline d-xl-inline"><div style="min-height: 687px;background: white;"><div style="min-height: 687px;">
                     <section style="color: rgb(113,113,113);background-color: #ffffff;padding: 30px;height: 100%;">
                         <div class="container scstyle-1 sc-overflow" style="margin-bottom: 30px;max-height: 620px;">
                             <article style="background-color: rgba(244,244,244,0);">';
@@ -667,7 +667,7 @@ class Gallery {
 
 
     private function rangeChoose($label, $name, $min, $max, $style = null, $value = 0) {
-        return '<div class="row justify-content-center" style="'.$style.'"><div class="col-auto"><label class="col-form-label">'.$label.'</label></div><div class="col-auto"><input class="custom-range" type="range" name="'.$name.'" step="5" onclick="moveFilter()" value="'.$value.'" min="'.$min.'" max="'.$max.'"></div></div>';
+        return '<div class="row justify-content-center" style="'.$style.'"><div class="col-auto"><label class="col-form-label">'.$label.'</label></div><div class="col-auto"><input class="custom-range" type="range" name="'.$name.'" step="5" oninput="moveFilter()" value="'.$value.'" min="'.$min.'" max="'.$max.'"></div></div>';
     }
 
     private function allFilters() {
@@ -725,7 +725,7 @@ class Gallery {
         $Content .= $this->rangeChoose("Taille", "size", 100, 800, "margin-top: 15px;", 455);
         $Content .= '<div class="row"><div class="col-12"><div><div><section style="color: rgb(113,113,113);background-color: #ffffff;padding: 30px;margin-bottom: 20px;"><div class="container scstyle-1 sc-overflow"><article>';
         $Content .= $this->allFilters();
-        $Content .= '</article></div></section></div></div></div></div><div class="row"><div class="col"><div class="form-group"><label><strong>Titre</strong></label><input class="form-control" type="text" name="title" required></div><div class="form-group"><label><strong>Description</strong></label><textarea class="form-control" name="description" required></textarea></div><div class="form-group"><div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1" name="private"><label class="form-check-label" for="formCheck-1">Privé</label></div></div><input type="hidden" name="image" class="image-tag"><input type="hidden" name="height" value="286"><input type="hidden" name="filterPost" value="1"><button class="btn btn-danger btn-block" type="submit" id="submit" style="display:none">Envoyer</button></div></div>';
+        $Content .= '</article></div></section></div></div></div></div><div class="row"><div class="col"><div class="form-group"><label><strong>Titre (3-20 caractères)</strong></label><input class="form-control" type="text" name="title" required></div><div class="form-group"><label><strong>Description (3-255 caractères)</strong></label><textarea class="form-control" name="description" required></textarea></div><div class="form-group"><div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1" name="private"><label class="form-check-label" for="formCheck-1">Privé</label></div></div><input type="hidden" name="image" class="image-tag"><input type="hidden" name="height" value="286"><input type="hidden" name="filterPost" value="1"><button class="btn btn-danger btn-block" type="submit" id="submit" style="display:none">Envoyer</button></div></div>';
 
         $Content .= $this->alert;
         $Content .= $this->lastPostSubmit();
@@ -799,7 +799,7 @@ class Gallery {
             return ;
 
         if ((strlen($post['title']) > 20 OR strlen($post['description']) > 255) OR (strlen($post['title']) < 3 OR strlen($post['description']) < 3)) {
-            $this->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>Votre titre / description est trop court ou trop long !</span></div></div>';
+            $this->alert = '<div class="col"><div class="alert alert-danger" role="alert" style="width: 100%;margin-top: 24px;"><span>Votre titre / description est trop courte ou trop longue !</span></div></div>';
             return ;
         }
 

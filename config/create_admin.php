@@ -3,28 +3,30 @@
 require_once('../Class/Config/Form.php');
 require_once('../Class/Users.php');
 require_once('../Class/Database.php');
-require_once('database.php');
+include('database.php');
 
 $form = new App\Form();
 
 if (isset($_POST['submit'])) {
-
     try {
         $db = new PDO($DB_DSN, $USER_DB, $PASSWORD_DB);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch(PDOException $ex){
-        die(header('Location: /config/setup.php'));
+        header('Location: /config/setup.php');
+        exit();
     }
+
     $user = new App\Users($db, $_POST);
     $create = $user->createAdmin();
     if ($create == 1) {
         $_SESSION['id'] = 1;
         header('Location: ../index.php');
+        exit();
     }
     else if ($create == 0)
         $error = $form->errorMessage('Le format de l\'email entré est incorrect');
     else if ($create == -2)
-        $error = $form->errorMessage('Le mot de passe n\'est pas assez securisé');
+        $error = $form->errorMessage('Votre mot de passe doit contenir au moins une majuscule, une minuscule, <br/>un chiffre, un caractère special (autre qu\'une lettre ou un chiffre) <br/>et doit faire au moins 8 caractères de longueur.');
     else
         $error = $form->errorMessage('Les mots de passes saisis sont différents');
 

@@ -12,6 +12,7 @@ require_once('config/checkValid.php');
 if (isset($_GET['logout']) AND isset($_SESSION['id'])) {
     session_destroy();
     header('Location: index.php');
+    exit();
 }
 
 $section = 'index';
@@ -20,8 +21,10 @@ $User = new App\Users($db, null, $global);
 
 if (isset($_GET['verification']) AND $_GET['verification'] != '0') {
     $key = htmlentities($_GET['verification']);
-    if ($User->validateUser($key) == 1)
+    if ($User->validateUser($key) == 1){
         header('Location: index.php');
+        exit();
+    }
 }
 
 
@@ -38,7 +41,6 @@ if (isset($_GET['verification']) AND $_GET['verification'] != '0') {
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
-    <link rel="stylesheet" href="assets/css/partners.css">
     <link rel="stylesheet" href="assets/css/navbar.css">
     <link rel="stylesheet" href="assets/css/features.css">
     <link rel="stylesheet" href="assets/css/footer.css">
@@ -96,7 +98,6 @@ if (isset($_GET['verification']) AND $_GET['verification'] != '0') {
         </div>
     </div>
     <?= $indexManagment->features($db, $global); ?>
-    <?= $FrontManagment->partners(); ?>
     <?= $FrontManagment->footer(); ?>
 
     <?= $User->validatedAccount; ?>
